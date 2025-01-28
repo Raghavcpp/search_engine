@@ -5,9 +5,9 @@ asyncio
 aiohttp
 # sqlite3
 # urllib
-tqdm
+# tqdm
 collections
-math
+# math
 nltk
 re
-string
+# string
