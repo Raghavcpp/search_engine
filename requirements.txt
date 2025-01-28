@@ -3,7 +3,6 @@ requests
 bs4
 asyncio
 aiohttp
-sqlite3
 urllib
 tqdm
 collections
