@@ -9,5 +9,5 @@ aiohttp
 # collections
 # math
 nltk
-re
+# re
 # string
