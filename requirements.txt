@@ -6,7 +6,7 @@ aiohttp
 # sqlite3
 # urllib
 # tqdm
-collections
+# collections
 # math
 nltk
 re
