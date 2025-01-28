@@ -11,3 +11,4 @@ aiohttp
 nltk
 # re
 # string
+gunicorn
