@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Engine</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+            color: #333;
+        }
+        .title {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .title h3 {
+            font-size: 28px;
+            font-weight: bold;
+            color: #343a40;
+        }
+        .search {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .search input[type="text"] {
+            width: 400px;
+            height: 40px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ced4da;
+            border-radius: 8px;
+            outline: none;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        .search input[type="text"]:focus {
+            border-color: #007bff;
+        }
+        .search input[type="button"] {
+            height: 42px;
+            padding: 0 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-left: 10px;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        .search input[type="button"]:hover {
+            background-color: #0056b3;
+        }
+
+        /* Search Results */
+        .search-result {
+            margin: 30px auto;
+            max-width: 800px;
+        }
+        .search-result-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .search-result-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .search-result-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .search-result-title:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <div class="title">
+            <h3>Search Engine</h3>
+        </div>
+        <div class="search">
+            <input type="text" id="query" placeholder="Write your query">
+            <input type="button" value="Search" onclick="performSearch()">
+        </div>
+    </center>
+    <br>
+    <div class="search-result" id="search-result">
+        <!-- Results will be displayed here -->
+    </div>
+
+    <script>
+        async function performSearch() {
+            // Get the query input
+            const query = document.getElementById('query').value;
+
+            // Ensure the query is not empty
+            if (!query.trim()) {
+                document.getElementById('search-result').innerHTML = 
+                    "<p style='color: red; text-align: center;'>Please enter a query!</p>";
+                return;
+            }
+
+            // Send a POST request to the backend
+            try {
+                const response = await fetch('/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `query=${encodeURIComponent(query)}`,
+                });
+
+                // Parse the JSON response
+                const result = await response.json();
+
+                // Display the results in the search-result div
+                document.getElementById('search-result').innerHTML = formatResults(result.data);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('search-result').innerHTML = 
+                    "<p style='color: red; text-align: center;'>An error occurred while searching.</p>";
+            }
+        }
+
+        function formatResults(data) {
+            if (!data || data.length === 0) {
+                return "<p style='text-align: center;'>No results found.</p>";
+            }
+
+            // Create a structured HTML representation of results
+            return data.map(item => {
+                return `
+                    <div class="search-result-item">
+                        <a href="${item[0]}" target="_blank" class="search-result-title">
+                            ${item[1]}
+                        </a>
+                    </div>
+                `;
+            }).join('');
+        }
+    </script>
+</body>
+</html>

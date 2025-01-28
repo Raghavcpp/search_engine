@@ -1,0 +1,13 @@
+flask
+requests
+bs4
+asyncio
+aiohttp
+sqlite3
+urllib
+tqdm
+collections
+math
+nltk
+re
+string
